@@ -23,4 +23,3 @@ data1_string: 'Mode=newreq&CertRequest='
 #  REPLACE [TEMPLATE_NAME] with your valid template name.
 data2_string: '&CertAttrib=CertificateTemplate:{{ certificate_template_name }}&TargetStoreFlags=0&SaveCert=yes&ThumbPrint='
 
-# this vars file is encrypted so awx has the vault password
