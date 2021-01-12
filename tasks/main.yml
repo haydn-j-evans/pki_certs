@@ -106,7 +106,7 @@
 
 - name: Run cert validation script to ensure crt matches the key
   become: True
-  script: validate_cert.sh
+  script: validate_cert.sh {{ ansible_domain }} {{ ansible_hostname }}
   register: validation
   tags:
     - validate
