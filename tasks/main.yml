@@ -113,7 +113,6 @@
 
 - name: Generate a PFX file for java related programs just in case but we will let them deal with setting the password.
   become: True
-  shell: 'openssl pkcs12 -export -out /etc/pki/tls/certs/{{ ansible_hostname }}.{{ ansible_domain }}.p12 -inkey /etc/pki/tls/private/{{ ansible_hostname }}.{{ ansible_domain }}.key -in /etc/pki/tls/certs/{{ ansible_hostname }}.{{ ansible_domain }}.crt -certfile /etc/pki/ca-trust/source/anchors/"{{ local_root_ca_cert }}" -password pass:changeit'
-  when: ca_stat.stat.exists
+  shell: 'openssl pkcs12 -export -out /etc/pki/tls/certs/{{ ansible_hostname }}.{{ ansible_domain }}.p12 -inkey /etc/pki/tls/private/{{ ansible_hostname }}.{{ ansible_domain }}.key -in /etc/pki/tls/certs/{{ ansible_hostname }}.{{ ansible_domain }}.crt -certfile /etc/pki/ca-trust/source/anchors/Root-Centogene-CA-Chain.crt -password pass:changeit'
   tags:
     - pfx
