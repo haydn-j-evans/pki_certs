@@ -51,7 +51,7 @@
     - cert
 
 - name: Download the certificate from the PKI server
-  shell: "curl -s -k -u {{ ad_user }}:{{ ad_pass }} --ntlm {{ header_content|regex_replace('\n') }} -o {{ item.item.item.item.path }}/{{ ansible_hostname }}.{{ ansible_domain }}.crt {{ pki_ca_url }}/{{ item.stdout.split('\"')[1][:-1] }}"
+  shell: "curl -s -k -u {{ ad_user }}:{{ ad_pass }} --ntlm {{ header_content|regex_replace('\n') }} -o {{ item_path }}/{{ ansible_hostname }}.{{ ansible_domain }}.crt {{ pki_ca_url }}/{{ item.stdout.split('\"')[1][:-1] }}"
   args:
     warn: no
   loop: "{{ mycert_request.results }}"
@@ -64,7 +64,7 @@
 - name: Upload signed crt file to /etc/pki/tls/certs
   copy:
     remote_src: yes
-    src: "{{ item.item.path }}/{{ ansible_hostname }}.{{ ansible_domain }}.crt"
+    src: "{{ item_path }}/{{ ansible_hostname }}.{{ ansible_domain }}.crt"
     dest: "/etc/pki/tls/certs/{{ ansible_hostname }}.{{ ansible_domain }}.crt"
     owner: root
     group: root
@@ -81,7 +81,7 @@
   become: True
   copy:
     remote_src: yes
-    src: "{{ item.item.path }}/{{ ansible_hostname }}.{{ ansible_domain }}.key"
+    src: "{{ item_path }}/{{ ansible_hostname }}.{{ ansible_domain }}.key"
     dest: "/etc/pki/tls/private/{{ ansible_hostname }}.{{ ansible_domain }}.key"
     owner: root
     group: root
@@ -96,7 +96,7 @@
 - name: Copy csr file to /etc/pki/tls/misc 
   copy:
     remote_src: yes
-    src: "{{ item.item.path }}/{{ ansible_hostname }}.{{ ansible_domain }}.csr"
+    src: "{{ item_path }}/{{ ansible_hostname }}.{{ ansible_domain }}.csr"
     dest: "/etc/pki/tls/misc/{{ ansible_hostname }}.{{ ansible_domain }}.csr"
     owner: root
     group: root
