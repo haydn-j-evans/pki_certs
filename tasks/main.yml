@@ -42,6 +42,7 @@
     warn: false
   register: mycert_request
   loop: "{{ csr_content.results }}"
+  no_log: True
   when: csr_content is succeeded
   tags:
     - cert
