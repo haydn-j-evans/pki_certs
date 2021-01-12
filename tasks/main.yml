@@ -29,7 +29,7 @@
 
 - name: Slurp the CSR file contents
   slurp:
-    src: "{{ item.item.path }}/{{ ansible_hostname }}.{{ ansible_domain }}.csr"
+    src: "{{ item_path }}/{{ ansible_hostname }}.{{ ansible_domain }}.csr"
   register: csr_content
   loop: "{{ config_stat.results }}"
   when: gencsr is changed
@@ -39,7 +39,7 @@
 
 # Yes this is ugly, but I did it anway until I have time to figure out how to use teh uri module to do this task.
 - name: Request the certificate from the PKI Server  
-  shell: curl -s -k -u "{{ ad_user }}:{{ ad_pass }}" --ntlm {{ header_content|regex_replace('\n') }} {{ pki_ca_req_url }} --data "{{ data1_string }}{{ item.content| b64decode | regex_replace('\n') | regex_replace('([+])','%2B') | regex_replace(' ','+') }}{{ data2_string }}" | grep 'certnew.cer?ReqID' |grep location
+  shell: curl -s -k -u "{{ ad_user }}:{{ ad_pass }}" --ntlm {{ header_content|regex_replace('\n') }} {{ pki_ca_req_url }} --data "{{ data1_string }}{{ item.csr_content| b64decode | regex_replace('\n') | regex_replace('([+])','%2B') | regex_replace(' ','+') }}{{ data2_string }}" | grep 'certnew.cer?ReqID' |grep location
   no_log: True
   args:
     warn: false
