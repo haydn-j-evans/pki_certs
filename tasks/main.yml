@@ -8,7 +8,7 @@
 - name: Generate a configuration file which is used to generate a csr and key
   template:
     src: openssl.j2
-    dest: "{{ item.path }}/openssl.conf"
+    dest: "/tmp/openssl.conf"
     mode: 0644
   loop: 
     - "{{ tempfile }}"
@@ -17,7 +17,7 @@
     - cert
 
 - name: Generate a private key and CSR
-  shell: 'openssl req -new -newkey rsa:2048 -days 1095 -sha256 -nodes -out {{ item.item.path }}/{{ ansible_hostname }}.{{ ansible_domain }}.csr -keyout {{ item.item.path }}/{{ ansible_hostname }}.{{ ansible_domain }}.key -config {{ item.dest }}'
+  shell: 'openssl req -new -newkey rsa:2048 -days 1095 -sha256 -nodes -out /tmp/{{ ansible_hostname }}.{{ ansible_domain }}.csr -keyout /tmp/{{ ansible_hostname }}.{{ ansible_domain }}.key -config {{ item.dest }}'
   args:
     chdir: /tmp
     warn: no
@@ -29,7 +29,7 @@
 
 - name: Slurp the CSR file contents
   slurp:
-    src: "{{ item.item.path }}/{{ ansible_hostname }}.{{ ansible_domain }}.csr"
+    src: "/tmp/{{ ansible_hostname }}.{{ ansible_domain }}.csr"
   register: csr_content
   loop: "{{ config_stat.results }}"
   when: gencsr is changed
