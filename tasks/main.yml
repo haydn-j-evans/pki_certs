@@ -42,7 +42,6 @@
     warn: false
   register: mycert_request
   loop: "{{ csr_content.results }}"
-  delegate_to: localhost
   when: csr_content is succeeded
   tags:
     - cert
