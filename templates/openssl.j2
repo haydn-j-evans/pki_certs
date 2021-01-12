@@ -20,74 +20,77 @@ subjectAltName = @alt_names
 [ alt_names ]
 DNS.1 = {{ ansible_hostname }}.{{ ansible_domain }}
 {% if pki_san1 is defined %}
-DNS.2 = {{ pki_san1 }}.{{ ansible_domain }}
+DNS.2 = {{ pki_san1 }}
 {% endif %}
 {% if pki_san2 is defined %}
-DNS.3 = {{ pki_san2 }}.{{ ansible_domain }}
+DNS.3 = {{ pki_san2 }}
 {% endif %}
 {% if pki_san3 is defined %}
-DNS.4 = {{ pki_san3 }}.{{ ansible_domain }}
+DNS.4 = {{ pki_san3 }}
 {% endif %}
 {% if pki_san4 is defined %}
-DNS.5 = {{ pki_san4 }}.{{ ansible_domain }}
+DNS.5 = {{ pki_san4 }}
 {% endif %}
 {% if pki_san5 is defined %}
-DNS.6 = {{ pki_san5 }}.{{ ansible_domain }}
+DNS.6 = {{ pki_san5 }}
 {% endif %}
 {% if pki_san6 is defined %}
-DNS.7 = {{ pki_san6 }}.{{ ansible_domain }}
+DNS.7 = {{ pki_san6 }}
 {% endif %}
 {% if pki_san7 is defined %}
-DNS.8 = {{ pki_san7 }}.{{ ansible_domain }}
+DNS.8 = {{ pki_san7 }}
 {% endif %}
 {% if pki_san8 is defined %}
-DNS.9 = {{ pki_san8 }}.{{ ansible_domain }}
+DNS.9 = {{ pki_san8 }}
 {% endif %}
 {% if pki_san9 is defined %}
-DNS.10 = {{ pki_san9 }}.{{ ansible_domain }}
+DNS.10 = {{ pki_san9 }}
 {% endif %}
 {% if pki_san10 is defined %}
-DNS.11 = {{ pki_san10 }}.{{ ansible_domain }}
+DNS.11 = {{ pki_san10 }}
 {% endif %}
 {% if pki_san11 is defined %}
-DNS.12 = {{ pki_san11 }}.{{ ansible_domain }}
+DNS.12 = {{ pki_san11 }}
 {% endif %}
 {% if pki_san12 is defined %}
-DNS.13 = {{ pki_san12 }}.{{ ansible_domain }}
+DNS.13 = {{ pki_san12 }}
 {% endif %}
 {% if pki_san13 is defined %}
-DNS.14 = {{ pki_san13 }}.{{ ansible_domain }}
+DNS.14 = {{ pki_san13 }}
 {% endif %}
 {% if pki_san14 is defined %}
-DNS.15 = {{ pki_san14 }}.{{ ansible_domain }}
+DNS.15 = {{ pki_san14 }}
 {% endif %}
 {% if pki_san15 is defined %}
-DNS.16 = {{ pki_san15 }}.{{ ansible_domain }}
+DNS.16 = {{ pki_san15 }}
 {% endif %}
 {% if pki_san16 is defined %}
-DNS.17 = {{ pki_san16 }}.{{ ansible_domain }}
+DNS.17 = {{ pki_san16 }}
 {% endif %}
 {% if pki_san17 is defined %}
-DNS.18 = {{ pki_san17 }}.{{ ansible_domain }}
+DNS.18 = {{ pki_san17 }}
 {% endif %}
 {% if pki_san18 is defined %}
-DNS.19 = {{ pki_san18 }}.{{ ansible_domain }}
+DNS.19 = {{ pki_san18 }}
 {% endif %}
 {% if pki_san19 is defined %}
-DNS.20 = {{ pki_san19 }}.{{ ansible_domain }}
+DNS.20 = {{ pki_san19 }}
+{% endif %}
+{% if pki_san20 is defined %}
+DNS.21 = {{ pki_san20 }}
 {% endif %}
 {% if pki_ip1 is defined %}
-IP.1 = {{ pki_ip1 }}.{{ ansible_domain }}
+IP.1 = {{ pki_ip1 }}
 {% endif %}
 {% if pki_ip2 is defined %}
-IP.2 = {{ pki_ip2 }}.{{ ansible_domain }}
+IP.2 = {{ pki_ip2 }}
 {% endif %}
 {% if pki_ip3 is defined %}
-IP.3 = {{ pki_ip3 }}.{{ ansible_domain }}
+IP.3 = {{ pki_ip3 }}
 {% endif %}
 {% if pki_ip4 is defined %}
-IP.4 = {{ pki_ip4 }}.{{ ansible_domain }}
+IP.4 = {{ pki_ip4 }}
 {% endif %}
 {% if pki_ip5 is defined %}
-IP.5 = {{ pki_ip5 }}.{{ ansible_domain }}
+IP.5 = {{ pki_ip5 }}
 {% endif %}
