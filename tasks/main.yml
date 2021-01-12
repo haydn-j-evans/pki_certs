@@ -8,7 +8,7 @@
 - name: Generate a configuration file which is used to generate a csr and key
   template:
     src: openssl.j2
-    dest: "{{ item_path }}/openssl.conf"
+    dest: "{{ item.path }}/openssl.conf"
     mode: 0644
   loop: 
     - "{{ tempfile }}"
@@ -17,7 +17,7 @@
     - cert
 
 - name: Generate a private key and CSR
-  shell: 'openssl req -new -newkey rsa:2048 -days 1095 -sha256 -nodes -out {{ item_path }}/{{ ansible_hostname }}.{{ ansible_domain }}.csr -keyout {{ item_path }}/{{ ansible_hostname }}.{{ ansible_domain }}.key -config "{{ item_path }}/openssl.conf"'
+  shell: 'openssl req -new -newkey rsa:2048 -days 365 -sha256 -nodes -out {{ item.item.path }}/{{ ansible_hostname }}.{{ ansible_domain }}.csr -keyout {{ item.item.path }}/{{ ansible_hostname }}.{{ ansible_domain }}.key -config {{ item.dest }}'
   args:
     chdir: /tmp
     warn: no
@@ -29,18 +29,16 @@
 
 - name: Slurp the CSR file contents
   slurp:
-    src: "{{ item_path }}/{{ ansible_hostname }}.{{ ansible_domain }}.csr"
+    src: "{{ item.item.path }}/{{ ansible_hostname }}.{{ ansible_domain }}.csr"
   register: csr_content
   loop: "{{ config_stat.results }}"
   when: gencsr is changed
   tags:
     - cert
 
-
-# Yes this is ugly, but I did it anway until I have time to figure out how to use teh uri module to do this task.
 - name: Request the certificate from the PKI Server  
   shell: curl -s -k -u "{{ ad_user }}:{{ ad_pass }}" --ntlm {{ header_content|regex_replace('\n') }} {{ pki_ca_req_url }} --data "{{ data1_string }}{{ item.content| b64decode | regex_replace('\n') | regex_replace('([+])','%2B') | regex_replace(' ','+') }}{{ data2_string }}" | grep 'certnew.cer?ReqID' |grep location
- # no_log: True
+  no_log: True
   args:
     warn: false
   register: mycert_request
@@ -49,9 +47,9 @@
   when: csr_content is succeeded
   tags:
     - cert
-
+    
 - name: Download the certificate from the PKI server
-  shell: "curl -s -k -u {{ ad_user }}:{{ ad_pass }} --ntlm {{ header_content|regex_replace('\n') }} -o {{ item_path }}/{{ ansible_hostname }}.{{ ansible_domain }}.crt {{ pki_ca_url }}/{{ item.stdout.split('\"')[1][:-1] }}"
+  shell: "curl -s -k -u {{ ad_user }}:{{ ad_pass }} --ntlm {{ header_content|regex_replace('\n') }} -o {{ item.item.item.item.path }}/{{ ansible_hostname }}.{{ ansible_domain }}.crt {{ pki_ca_url }}/{{ item.stdout.split('\"')[1][:-1] }}"
   args:
     warn: no
   loop: "{{ mycert_request.results }}"
@@ -60,11 +58,10 @@
   when: csr_content is succeeded
   tags:
     - cert
-
 - name: Upload signed crt file to /etc/pki/tls/certs
   copy:
     remote_src: yes
-    src: "{{ item_path }}/{{ ansible_hostname }}.{{ ansible_domain }}.crt"
+    src: "{{ item.item.path }}/{{ ansible_hostname }}.{{ ansible_domain }}.crt"
     dest: "/etc/pki/tls/certs/{{ ansible_hostname }}.{{ ansible_domain }}.crt"
     owner: root
     group: root
@@ -81,7 +78,7 @@
   become: True
   copy:
     remote_src: yes
-    src: "{{ item_path }}/{{ ansible_hostname }}.{{ ansible_domain }}.key"
+    src: "{{ item.item.path }}/{{ ansible_hostname }}.{{ ansible_domain }}.key"
     dest: "/etc/pki/tls/private/{{ ansible_hostname }}.{{ ansible_domain }}.key"
     owner: root
     group: root
@@ -96,7 +93,7 @@
 - name: Copy csr file to /etc/pki/tls/misc 
   copy:
     remote_src: yes
-    src: "{{ item_path }}/{{ ansible_hostname }}.{{ ansible_domain }}.csr"
+    src: "{{ item.item.path }}/{{ ansible_hostname }}.{{ ansible_domain }}.csr"
     dest: "/etc/pki/tls/misc/{{ ansible_hostname }}.{{ ansible_domain }}.csr"
     owner: root
     group: root
