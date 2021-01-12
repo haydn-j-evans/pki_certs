@@ -17,7 +17,7 @@
     - cert
 
 - name: Generate a private key and CSR
-  shell: 'openssl req -new -newkey rsa:2048 -days 1095 -sha256 -nodes -out {{ item_path }}/{{ ansible_hostname }}.{{ ansible_domain }}.csr -keyout {{ item_path }}/{{ ansible_hostname }}.{{ ansible_domain }}.key -config "{{ item.path }}/openssl.conf"'
+  shell: 'openssl req -new -newkey rsa:2048 -days 1095 -sha256 -nodes -out {{ item_path }}/{{ ansible_hostname }}.{{ ansible_domain }}.csr -keyout {{ item_path }}/{{ ansible_hostname }}.{{ ansible_domain }}.key -config "{{ item_path }}/openssl.conf"'
   args:
     chdir: /tmp
     warn: no
