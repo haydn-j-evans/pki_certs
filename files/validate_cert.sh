@@ -1,7 +1,9 @@
 #!/bin/bash
 
-CERTFILE="/etc/pki/tls/certs/`hostname -f`.crt"
-KEYFILE="/etc/pki/tls/private/`hostname -f`.key"
+
+
+CERTFILE=$(find /etc/pki/tls/certs -name $HOSTNAME*.crt)
+KEYFILE=$(find /etc/pki/tls/private -name $HOSTNAME*.key)
 
 
 if [ -f ${KEYFILE} ] && [ -f ${CERTFILE} ];then
