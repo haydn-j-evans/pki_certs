@@ -5,12 +5,16 @@
   stat:
     path: /etc/pki/tls/misc/openssl.conf
   register: openssl_result
-
+  tags:
+    - cert
+    
 - name: Create temporary build directory
   tempfile:
     state: directory
   register: tempfile
-
+  tags:
+    - cert
+    
 # Only run this task if it a new openssl file is needed
 
 - name: Generate a configuration file which is used to generate a csr and key
@@ -160,6 +164,8 @@
   register: pki_stat
   loop: "{{ config_stat.results }}"
   tags:
+    - verify
+    - cert
 
 - name: Run cert validation script to ensure crt matches the key
   become: True
