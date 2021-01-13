@@ -9,7 +9,7 @@
     - cert
 
 - meta: end_host
-  when: (not openssl_result.stat.exists) or (update_existing_cert_domains == false)
+  when: (not openssl_result.stat.exists)
 
 - name: Create temporary build directory
   tempfile:
