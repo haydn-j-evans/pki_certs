@@ -1,9 +1,17 @@
 ---
 # tasks file for deploy_pki_cert
+
+- name: Check that the openssl.conf exists already
+        stat:
+          path: /etc/pki/tls/misc/openssl.conf
+        register: openssl_result
+
 - name: Create temporary build directory
-  tempfile:
-    state: directory
-  register: tempfile
+        tempfile:
+          state: directory
+        register: tempfile
+
+# Only run this task if it a new openssl file is needed
 
 - name: Generate a configuration file which is used to generate a csr and key
   template:
@@ -13,17 +21,31 @@
   loop: 
     - "{{ tempfile }}"
   register: config_stat
+  when: (openssl_result.stat.exists == False) or (update_existing_cert == "yes")
   tags:
     - cert
 
-- name: Generate a private key and CSR
+# Only run this task if it a new openssl file was generated
+
+- name: Generate a private key and CSR based on new openssl.conf
   shell: 'openssl req -new -newkey rsa:2048 -days 365 -sha256 -nodes -out {{ item.item.path }}/{{ ansible_hostname }}.{{ ansible_domain }}.csr -keyout {{ item.item.path }}/{{ ansible_hostname }}.{{ ansible_domain }}.key -config {{ item.dest }}'
   args:
     chdir: /tmp
     warn: no
   register: gencsr
   loop: "{{ config_stat.results }}"
-  when: config_stat.changed
+  when: config_stat.changed or (openssl_result.stat.exists == False)
+  tags:
+    - cert
+
+- name: Generate a private key and CSR based on existing openssl.conf
+  shell: 'openssl req -new -newkey rsa:2048 -days 365 -sha256 -nodes -out {{ item.item.path }}/{{ ansible_hostname }}.{{ ansible_domain }}.csr -keyout {{ item.item.path }}/{{ ansible_hostname }}.{{ ansible_domain }}.key -config /etc/pki/tls/misc/openssl.conf'
+  args:
+    chdir: /tmp
+    warn: no
+  register: gencsr
+  loop: "{{ config_stat.results }}"
+  when: (openssl_result.stat.exists == True)
   tags:
     - cert
 
@@ -57,6 +79,7 @@
   when: csr_content is succeeded
   tags:
     - cert
+
 - name: Upload signed crt file to /etc/pki/tls/certs
   copy:
     remote_src: yes
@@ -104,6 +127,39 @@
   tags:
     - verify
     - cert
+
+# Only run this task if it a new openssl file was generated
+
+- name: Upload opensslconf to /etc/pki/tls/misc/
+  become: True
+  copy:
+    remote_src: yes
+    src: "{{ item.item.path }}/openssl.conf"
+    dest: "/etc/pki/tls/misc/openssl.conf"
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes 
+  register: pki_stat
+  loop: "{{ config_stat.results }}"
+  when: (openssl_result.stat.exists == False) or (update_existing_cert == "yes")
+  tags:
+    - verify
+    - cert
+
+- name: Copy csr file to /etc/pki/tls/misc 
+  copy:
+    remote_src: yes
+    src: "{{ item.item.path }}/{{ ansible_hostname }}.{{ ansible_domain }}.csr"
+    dest: "/etc/pki/tls/misc/{{ ansible_hostname }}.{{ ansible_domain }}.csr"
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes 
+  become: True
+  register: pki_stat
+  loop: "{{ config_stat.results }}"
+  tags:
 
 - name: Run cert validation script to ensure crt matches the key
   become: True
