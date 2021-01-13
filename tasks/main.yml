@@ -25,7 +25,7 @@
   loop: 
     - "{{ tempfile }}"
   register: config_stat
-  when: (openssl_result.stat.exists == False) or (change_existing_cert.exists == True)
+  when: (openssl_result.stat.exists == False) or (update_existing_cert_domains == "yes")
   tags:
     - cert
 
