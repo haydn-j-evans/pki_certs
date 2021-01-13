@@ -25,7 +25,7 @@
   loop: 
     - "{{ tempfile }}"
   register: config_stat
-  when: (openssl_result.stat.exists == False) or (update_existing_cert_domains == "yes")
+  when: (openssl_result.stat.exists == False) or (update_existing_cert_domains == "true")
   tags:
     - cert
 
@@ -146,7 +146,7 @@
     backup: yes 
   register: pki_stat
   loop: "{{ config_stat.results }}"
-  when: (openssl_result.stat.exists == False) or (update_existing_cert_domains == "yes")
+  when: (openssl_result.stat.exists == False) or (update_existing_cert_domains == "true")
   tags:
     - verify
     - cert
