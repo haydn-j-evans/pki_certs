@@ -25,7 +25,7 @@
   loop: 
     - "{{ tempfile }}"
   register: config_stat
-  when: (not openssl_result.stat.exists) or (update_existing_cert_domains == "true")
+  when: (not openssl_result.stat.exists) or (update_existing_cert_domains == true)
   tags:
     - cert
 
@@ -49,7 +49,7 @@
     warn: no
   register: gencsr2
   loop: "{{ config_stat.results }}"
-  when: (openssl_result.stat.exists == True)
+  when: (openssl_result.stat.exists)
   tags:
     - cert
 
@@ -146,7 +146,7 @@
     backup: yes 
   register: pki_stat
   loop: "{{ config_stat.results }}"
-  when: (not openssl_result.stat.exists) or (update_existing_cert_domains == "true")
+  when: (not openssl_result.stat.exists) or (update_existing_cert_domains == true)
   tags:
     - verify
     - cert
