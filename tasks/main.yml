@@ -47,7 +47,7 @@
   args:
     chdir: /tmp
     warn: no
-  register: gencsr
+  register: gencsr2
   loop: "{{ config_stat.results }}"
   when: (openssl_result.stat.exists == True)
   tags:
@@ -58,7 +58,7 @@
     src: "{{ item.item.path }}/{{ ansible_hostname }}.{{ ansible_domain }}.csr"
   register: csr_content
   loop: "{{ config_stat.results }}"
-  when: gencsr is changed
+  when: (gencsr is changed) or (gencsr2 is changed)
   tags:
     - cert
 
