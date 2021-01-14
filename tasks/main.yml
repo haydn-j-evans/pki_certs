@@ -189,9 +189,9 @@
     ansible.builtin.debug:
     msg: 'This error handling triggers if any tasks in the block above fail'
     community.general.mail:
-      host: {{ mailhost }} 
-      port: {{ mailport }}
-      to: {{ mailto }}
-      from: {{mailfrom}}
+      host: "{{ mailhost }}"
+      port: "{{ mailport }}"
+      to: "{{ mailto }}"
+      from: "{{mailfrom}}"
       subject: AWX Task has failed!
       body: The certificate replacement task on {{ ansible_hostname }} has failed! Please check the AWX logs to see the error
