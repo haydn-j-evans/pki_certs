@@ -1,6 +1,8 @@
 ---
 # vars file for pki_certs
 
+ansible_domain: centogene.internal
+
 pki_ca_url: 'https://{{ pki_ca_host }}/certsrv'
 
 pki_ca_referer: '{{ pki_ca_url }}/certrqxt.asp'
