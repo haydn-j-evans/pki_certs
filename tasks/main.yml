@@ -186,8 +186,6 @@
 
 - rescue:
   - name: Email on Playbook failure
-    ansible.builtin.debug:
-    msg: 'This error handling triggers if any tasks in the block above fail'
     community.general.mail:
       host: "{{ mailhost }}"
       port: "{{ mailport }}"
