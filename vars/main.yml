@@ -3,11 +3,11 @@
 
 ansible_domain: centogene.internal
 
-pki_ca_url: 'https://{{ pki_ca_host }}/certsrv/'
+pki_ca_url: 'https://{{ pki_ca_host }}/certsrv'
 
-pki_ca_referer: '{{ pki_ca_url }}certrqxt.asp'
+pki_ca_referer: '{{ pki_ca_url }}/certrqxt.asp'
 
-pki_ca_req_url: '{{ pki_ca_url }}certfnsh.asp'
+pki_ca_req_url: '{{ pki_ca_url }}/certfnsh.asp'
 
 header_content: >
       -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
@@ -18,7 +18,7 @@ header_content: >
       -H 'Referer: https://{{ pki_ca_host }}/certsrv/certrqxt.asp'
       -H 'User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko'
       -H 'Content-Type: application/x-www-form-urlencoded'
-
+      
 data1_string: 'Mode=newreq&CertRequest='
 
 #  REPLACE [TEMPLATE_NAME] with your valid template name.
