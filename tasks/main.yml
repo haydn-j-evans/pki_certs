@@ -66,7 +66,7 @@
     - cert
 
 - name: Request the certificate from the PKI Server  
-  shell: shell: curl -s -k -u "{{ ad_user }}:{{ ad_pass }}" --ntlm {{ header_content|regex_replace('\n') }} {{ pki_ca_req_url }} --data "{{ data1_string }}{{ item.content| b64decode | regex_replace('\n') | regex_replace('([+])','%2B') | regex_replace(' ','+') }}{{ data2_string }}" | grep 'certnew.cer?ReqID' |grep location
+  shell: curl -s -k -u "{{ ad_user }}:{{ ad_pass }}" --ntlm {{ header_content|regex_replace('\n') }} {{ pki_ca_req_url }} --data "{{ data1_string }}{{ item.content| b64decode | regex_replace('\n') | regex_replace('([+])','%2B') | regex_replace(' ','+') }}{{ data2_string }}" | grep 'certnew.cer?ReqID' |grep location
   args:
     warn: false
   register: mycert_request
