@@ -3,11 +3,11 @@
 
 ansible_domain: centogene.internal
 
-pki_ca_url: 'https://{{ pki_ca_host }}/certsrv'
+pki_ca_url: 'https://{{ pki_ca_host }}/certsrv/'
 
-pki_ca_referer: '{{ pki_ca_url }}/certrqxt.asp'
+pki_ca_referer: '{{ pki_ca_url }}certrqxt.asp'
 
-pki_ca_req_url: '{{ pki_ca_url }}/certfnsh.asp'
+pki_ca_req_url: '{{ pki_ca_url }}certfnsh.asp'
 
 pki_header: "Host: {{ pki_ca_host }}"
 
