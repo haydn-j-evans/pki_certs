@@ -9,8 +9,6 @@ pki_ca_referer: '{{ pki_ca_url }}certrqxt.asp'
 
 pki_ca_req_url: '{{ pki_ca_url }}certfnsh.asp'
 
-pki_header: "Host: {{ pki_ca_host }}"
-
 header_content: >
       -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
       -H 'Accept-Encoding: gzip, deflate'
