@@ -1,4 +1,4 @@
-# Windows PKI Certificate Issuing
+# Windows PKI Certificate Issuing - haydn_j_evans.pki_certs
 
 Ansible role that generates an openssl config, creates an csr request, and automatically requests/retrieves a certiicate from a Microsoft CA Server
 
@@ -18,7 +18,7 @@ This role can be used with the followung variables:
         ansible_host: 
         ansible_domain:
         pki_ca_host:
-        update_existing_cert_domains: true/false
+        update_existing_cert_domains: "true" or "false"
         certificate_organisational_unit: 
         certificate_organisation:
         certificate_email:
@@ -32,7 +32,6 @@ This role can be used with the followung variables:
         pki_ip1:
         .
         pki_ip5:
-
 ```
 
 The role supports a max of 20 Subject Alternative Names and a max of 5 IP addresses. Only insert as many values as you need.
