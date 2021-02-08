@@ -6,13 +6,19 @@ req_extensions = req_ext
 distinguished_name = dn
 
 [ dn ]
-C=DE
-ST=MecklenBurg-Vorpormmern
-L=Rostock
-O=Centogene AG
-OU=IT
-emailAddress=servicedesk@centogene.com
-CN = {{ ansible_hostname }}.{{ ansible_domain }}
+{% if certificate_country is defined %}
+C= {{ certificate_country }}
+{% if certificate_state is defined %}
+ST= {{ certificate_state }}
+{% if certificate_city is defined %}
+L= {{ certificate_city }}
+{% if certificate_organisation is defined %}
+O= {{ certificate_organisation }}
+{% if certificate_organisational_unit is defined %}
+OU= {{ certificate_organisational_unit }}
+{% if certificate_email is defined %}
+emailAddress= {{ certificate_email }}
+CN = {{ certificate_cn }}
 
 [ req_ext ]
 subjectAltName = @alt_names
