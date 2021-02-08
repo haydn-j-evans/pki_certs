@@ -8,16 +8,22 @@ distinguished_name = dn
 [ dn ]
 {% if certificate_country is defined %}
 C= {{ certificate_country }}
+{% endif %}
 {% if certificate_state is defined %}
 ST= {{ certificate_state }}
+{% endif %}
 {% if certificate_city is defined %}
 L= {{ certificate_city }}
+{% endif %}
 {% if certificate_organisation is defined %}
 O= {{ certificate_organisation }}
+{% endif %}
 {% if certificate_organisational_unit is defined %}
 OU= {{ certificate_organisational_unit }}
+{% endif %}
 {% if certificate_email is defined %}
 emailAddress= {{ certificate_email }}
+{% endif %}
 CN = {{ certificate_cn }}
 
 [ req_ext ]
